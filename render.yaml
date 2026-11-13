@@ -1,0 +1,11 @@
+# Render Blueprint: free Docker web service built from this repo.
+# SQLite lives on the container's disk; on the free plan the disk resets on redeploy/restart,
+# and the app simply re-seeds 10,000 employees on start (see docs/DECISIONS.md).
+services:
+  - type: web
+    name: acme-salary-management
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/insights/overview
+    autoDeploy: true

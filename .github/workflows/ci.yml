@@ -54,6 +54,22 @@ jobs:
           name: frontend-dist
           path: frontend/dist/frontend/browser
 
+  docker:
+    name: Docker image builds and serves the app
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t salary-management .
+      - name: Smoke test the container
+        run: |
+          docker run -d -p 8080:8080 --name app salary-management
+          for i in $(seq 1 60); do curl -fs localhost:8080/api/insights/overview && break; sleep 2; done
+          curl -fs localhost:8080/api/insights/overview | grep '"headcount":10000'
+          curl -fs localhost:8080/ | grep -q 'ACME Salary Management'
+          curl -fs -o /dev/null localhost:8080/insights
+
   package:
     name: Package single runnable jar (API + UI)
     needs: [backend, frontend]
