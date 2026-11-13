@@ -1,0 +1,42 @@
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 8px;
+  background: var(--mat-sys-surface);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.logo {
+  color: var(--mat-sys-primary);
+}
+
+.brand {
+  font-weight: 600;
+  margin-right: 24px;
+}
+
+nav {
+  display: flex;
+  gap: 4px;
+
+  a {
+    text-decoration: none;
+    color: var(--mat-sys-on-surface-variant);
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 500;
+
+    &.active {
+      background: var(--mat-sys-secondary-container);
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+}
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}

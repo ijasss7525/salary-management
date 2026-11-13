@@ -1,0 +1,56 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .search {
+    flex: 1 1 280px;
+  }
+}
+
+.table-card {
+  background: var(--mat-sys-surface);
+  border-radius: 12px;
+  overflow: auto;
+  box-shadow: var(--mat-sys-level1);
+}
+
+table {
+  width: 100%;
+}
+
+.name {
+  font-weight: 500;
+}
+
+.muted {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 12px;
+}
+
+.mono {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.actions {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.empty {
+  padding: 32px;
+  text-align: center;
+}
+
+.error {
+  padding: 16px;
+  color: var(--mat-sys-error);
+}

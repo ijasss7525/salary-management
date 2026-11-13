@@ -1,0 +1,20 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  padding-top: 8px !important;
+  min-width: min(560px, 80vw);
+}
+
+.wide,
+.banner {
+  grid-column: 1 / -1;
+}
+
+.banner {
+  background: #fdecea;
+  color: #8a1c13;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
