@@ -4,8 +4,8 @@
 
 A web app that replaces ACME's salary spreadsheets. It lets the **HR Manager** maintain salaries for 10,000 employees across 8 countries and answer *"how does the org pay people?"*
 
-- **Live app:** https://acme-salary-management.onrender.com
-  (free hosting: after 15 idle minutes the first request takes about a minute to wake the server. Data resets to the 10,000-employee seed on each restart.)
+- **Live app:** https://acme-salary-management-lvs4.onrender.com
+  (free hosting: after 15 idle minutes the first request takes about a minute to wake the server. Data resets to the 10,000-employee seed on each restart. Render deploys from `main` with the root `Dockerfile`.)
 - **Video demo (67 s):** [docs/demo/demo.mp4](docs/demo/demo.mp4)
 
 | Employees | Pay insights |
