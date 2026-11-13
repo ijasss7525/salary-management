@@ -1,0 +1,118 @@
+<header class="page-header">
+  <div>
+    <h1>Pay insights</h1>
+    <p class="subtitle">How ACME pays its people. Country and role figures are in local currency.</p>
+  </div>
+</header>
+
+@if (overview.isLoading() || countries.isLoading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (overview.value(); as o) {
+  <section class="cards" aria-label="Overview">
+    <div class="card">
+      <span class="label">Employees</span>
+      <span class="value">{{ o.headcount | number }}</span>
+    </div>
+    <div class="card">
+      <span class="label">Countries</span>
+      <span class="value">{{ o.countries }}</span>
+    </div>
+    <div class="card">
+      <span class="label">Job titles</span>
+      <span class="value">{{ o.jobTitles }}</span>
+    </div>
+    <div class="card" matTooltip="Converted with static reference exchange rates, so approximate">
+      <span class="label">Annual payroll (≈ USD)</span>
+      <span class="value">{{ o.totalPayrollUsd | money: 'USD' }}</span>
+    </div>
+    <div class="card" matTooltip="Total payroll in USD divided by headcount">
+      <span class="label">Average salary (≈ USD)</span>
+      <span class="value">{{ o.averageSalaryUsd | money: 'USD' }}</span>
+    </div>
+  </section>
+}
+
+<section class="panel">
+  <h2>Pay by country</h2>
+  <p class="hint">Click a country to see pay by job title.</p>
+  <table class="data" data-testid="country-table">
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th class="num">Headcount</th>
+        <th class="num">Min</th>
+        <th class="num">Median</th>
+        <th class="num">Average</th>
+        <th class="num">Max</th>
+        <th class="num">Payroll (≈ USD)</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of countries.value(); track c.country) {
+        <tr (click)="select(c.country)" (keydown.enter)="select(c.country)" tabindex="0"
+            [class.active]="c.country === activeCountry()?.country"
+            [attr.aria-selected]="c.country === activeCountry()?.country">
+          <td>{{ c.countryName }} <span class="muted">{{ c.currency }}</span></td>
+          <td class="num">{{ c.stats.headcount | number }}</td>
+          <td class="num">{{ c.stats.min | money: c.currency }}</td>
+          <td class="num strong">{{ c.stats.median | money: c.currency }}</td>
+          <td class="num">{{ c.stats.average | money: c.currency }}</td>
+          <td class="num">{{ c.stats.max | money: c.currency }}</td>
+          <td class="num">{{ c.totalUsd | money: 'USD' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>
+
+@if (activeCountry(); as country) {
+  <section class="panel">
+    <div class="panel-title">
+      <h2>Pay by job title in {{ country.countryName }}</h2>
+      @if (flagged() > 0) {
+        <span class="flag-summary" matTooltip="Salaries more than 20% below or above the median for the same role in this country">
+          <mat-icon inline>flag</mat-icon> {{ flagged() }} people outside their role's pay band
+        </span>
+      }
+    </div>
+    @if (jobTitles.isLoading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    <table class="data" data-testid="job-title-table">
+      <thead>
+        <tr>
+          <th>Job title</th>
+          <th class="num">People</th>
+          <th class="num">Min</th>
+          <th class="num">Median</th>
+          <th class="num">Max</th>
+          <th class="range-col">Range (min · median · max)</th>
+          <th class="num" matTooltip="More than 20% below the role's median">Below band</th>
+          <th class="num" matTooltip="More than 20% above the role's median">Above band</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (j of jobTitles.value(); track j.jobTitle) {
+          <tr>
+            <td>{{ j.jobTitle }} <span class="muted">{{ j.department }}</span></td>
+            <td class="num">{{ j.stats.headcount | number }}</td>
+            <td class="num">{{ j.stats.min | money: country.currency }}</td>
+            <td class="num strong">{{ j.stats.median | money: country.currency }}</td>
+            <td class="num">{{ j.stats.max | money: country.currency }}</td>
+            <td class="range-col">
+              <div class="range" aria-hidden="true">
+                <span class="bar" [style.left.%]="percent(j.stats.min)"
+                      [style.width.%]="percent(j.stats.max) - percent(j.stats.min)"></span>
+                <span class="median" [style.left.%]="percent(j.stats.median)"></span>
+              </div>
+            </td>
+            <td class="num" [class.warn]="j.belowBand > 0">{{ j.belowBand }}</td>
+            <td class="num" [class.warn]="j.aboveBand > 0">{{ j.aboveBand }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+}
