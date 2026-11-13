@@ -40,7 +40,7 @@ describe('EmployeeList', () => {
     expect(req.request.params.get('sortBy')).toBe('fullName');
     expect(el.textContent).toContain('Asha Rao');
     expect(el.textContent).toContain('₹24,00,000');
-    expect(el.textContent).toContain('1 people');
+    expect(el.textContent).toContain('1 person');
   });
 
   it('filters by country and goes back to the first page', async () => {

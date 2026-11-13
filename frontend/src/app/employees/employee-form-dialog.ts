@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ApiService } from '../core/api.service';
 import { ApiProblem, Employee, EmployeeRequest, Meta } from '../core/models';
 
@@ -53,6 +53,11 @@ export class EmployeeFormDialog {
   protected readonly currency = computed(
     () => this.data.meta.countries.find((c) => c.code === this.country())?.currency ?? '',
   );
+
+  constructor() {
+    // Once the user edits the form, an earlier "already in use" message no longer applies.
+    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => this.serverError.set(null));
+  }
 
   save(): void {
     if (this.form.invalid) {

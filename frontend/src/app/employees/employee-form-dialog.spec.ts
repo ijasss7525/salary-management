@@ -90,5 +90,8 @@ describe('EmployeeFormDialog', () => {
     );
 
     expect(dialog.serverError()).toBe('Email asha.rao.1@acme.com is already in use');
+
+    dialog.form.controls.email.setValue('asha.new@acme.com');
+    expect(dialog.serverError()).toBeNull();
   });
 });

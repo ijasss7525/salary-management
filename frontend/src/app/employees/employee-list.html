@@ -1,7 +1,8 @@
 <header class="page-header">
   <div>
     <h1>Employees</h1>
-    <p class="subtitle">{{ employees.value().totalElements.toLocaleString() }} people{{ hasFilters() ? ' match your filters' : '' }}</p>
+    <p class="subtitle">{{ employees.value().totalElements.toLocaleString() }} {{ employees.value().totalElements === 1 ? 'person' : 'people' }}{{
+      hasFilters() ? (employees.value().totalElements === 1 ? ' matches' : ' match') + ' your filters' : '' }}</p>
   </div>
   <button mat-flat-button (click)="add()">
     <mat-icon>person_add</mat-icon>
